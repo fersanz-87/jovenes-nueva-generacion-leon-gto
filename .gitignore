@@ -1,0 +1,39 @@
+# dependencies
+node_modules/
+.pnpm-store/
+
+# env files
+.env
+.env.local
+.env.*.local
+
+# build output
+.next/
+out/
+build/
+dist/
+
+# debug logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# keys and certificates
+*.pem
+*.key
+*.cert
+*.p12
+
+# claude code
+.claude/
+
+# vercel
+.vercel
