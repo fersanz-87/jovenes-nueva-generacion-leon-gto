@@ -13,6 +13,9 @@ import {
   Waves,
   TreePine,
 } from "lucide-react";
+import CloudinaryImage from "@/components/ui/CloudinaryImage";
+import CloudinaryVideo from "@/components/ui/CloudinaryVideo";
+import { SERVICES_MEDIA } from "@/lib/cloudinary";
 
 const servicios = [
   { nombre: "Consejero en Adicciones", icono: HandHeart },
@@ -45,6 +48,17 @@ export default function Services() {
           </p>
         </div>
 
+        {/* Section image banner */}
+        <CloudinaryImage
+          publicId={SERVICES_MEDIA.sectionImage}
+          alt="Instalaciones y servicios del centro"
+          width={1200}
+          height={400}
+          className="mb-12 w-full rounded-2xl object-cover shadow-lg"
+          sizes="(max-width: 1280px) 100vw, 1200px"
+          fallback={null}
+        />
+
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {servicios.map((servicio) => (
             <div
@@ -71,6 +85,18 @@ export default function Services() {
             comunicación con el paciente y así poder expresarse abierta y libremente.
           </p>
         </div>
+
+        {/* Section video */}
+        <CloudinaryVideo
+          publicId={SERVICES_MEDIA.sectionVideo}
+          width={1200}
+          height={675}
+          autoPlay={false}
+          loop={false}
+          controls
+          className="mt-12 overflow-hidden rounded-2xl shadow-lg"
+          fallback={null}
+        />
       </div>
     </section>
   );

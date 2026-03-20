@@ -92,6 +92,17 @@ export default function Footer() {
             &copy; {currentYear} Jóvenes Nueva Generación A.C. Todos los derechos
             reservados.
           </p>
+          <p className="mt-2">
+            Desarrollado por{" "}
+            <a
+              href="https://www.fersanz.dev"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-accent-400 hover:text-accent-300 transition-colors"
+            >
+              Fer Sanz Dev
+            </a>
+          </p>
         </div>
       </div>
     </footer>

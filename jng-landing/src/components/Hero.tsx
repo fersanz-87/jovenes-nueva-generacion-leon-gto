@@ -1,13 +1,67 @@
+"use client";
+
 import { Phone, MessageCircle, Shield } from "lucide-react";
+import { HERO_MEDIA } from "@/lib/cloudinary";
+import CloudinaryImage from "@/components/ui/CloudinaryImage";
+import CloudinaryVideo from "@/components/ui/CloudinaryVideo";
 
 export default function Hero() {
+  const hasVideo = !!HERO_MEDIA.backgroundVideo;
+  const hasImage = !!HERO_MEDIA.backgroundImage;
+
   return (
     <section
       id="inicio"
-      className="relative flex min-h-screen items-center bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700 pt-16"
+      className="relative flex min-h-screen items-center overflow-hidden pt-16"
     >
-      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyem0wLTRWMjhIMjR2Mmgxem0tMi0ydi0ySDE0djJoMjB6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
-      <div className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
+      {/* Background layers */}
+      {hasVideo || hasImage ? (
+        <>
+          {/* Poster image as immediate background */}
+          {hasImage && (
+            <div className="absolute inset-0 z-0">
+              <CloudinaryImage
+                publicId={HERO_MEDIA.backgroundImage}
+                alt="Centro de rehabilitación Jóvenes Nueva Generación"
+                fill
+                sizes="100vw"
+                className="object-cover"
+                priority
+                fallback={
+                  <div className="h-full w-full bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700" />
+                }
+              />
+            </div>
+          )}
+
+          {/* Video layer */}
+          {hasVideo && (
+            <div className="absolute inset-0 z-[1]">
+              <CloudinaryVideo
+                publicId={HERO_MEDIA.backgroundVideo}
+                width={1920}
+                height={1080}
+                autoPlay
+                loop
+                controls={false}
+                className="h-full w-full [&_video]:h-full [&_video]:w-full [&_video]:object-cover"
+              />
+            </div>
+          )}
+
+          {/* Dark overlay for text readability */}
+          <div className="absolute inset-0 z-[2] bg-primary-900/60" />
+        </>
+      ) : (
+        <>
+          {/* Original gradient fallback */}
+          <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-500 to-primary-700" />
+          <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wNSI+PHBhdGggZD0iTTM2IDM0djItSDI0di0yaDEyem0wLTRWMjhIMjR2Mmgxem0tMi0ydi0ySDE0djJoMjB6Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-30" />
+        </>
+      )}
+
+      {/* Content */}
+      <div className="relative z-10 mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-3xl text-center">
           <div className="mb-6 inline-flex items-center gap-2 rounded-full bg-white/10 px-4 py-2 text-sm text-white backdrop-blur-sm">
             <Shield className="h-4 w-4 text-accent-400" />

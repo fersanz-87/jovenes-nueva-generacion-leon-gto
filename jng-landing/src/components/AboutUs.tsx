@@ -1,4 +1,6 @@
 import { Heart, Users, Brain, ShieldCheck } from "lucide-react";
+import CloudinaryImage from "@/components/ui/CloudinaryImage";
+import { ABOUT_MEDIA } from "@/lib/cloudinary";
 
 const pilares = [
   {
@@ -28,6 +30,8 @@ const pilares = [
 ];
 
 export default function AboutUs() {
+  const hasImage = !!ABOUT_MEDIA.sectionImage;
+
   return (
     <section id="nosotros" className="bg-gray-50 py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -36,19 +40,41 @@ export default function AboutUs() {
             Sobre Nosotros
           </h2>
           <div className="mx-auto mb-8 h-1 w-20 rounded-full bg-accent-400" />
-          <p className="mb-6 text-lg text-gray-600 leading-relaxed">
-            CEPAAV es un centro de rehabilitación profesional que cuenta con un equipo
-            multidisciplinario de médicos, psicólogos, psiquiatras, terapeutas,
-            nutriólogos y consejeros profesionales. Todo esto para que el paciente
-            restructure su vida en las áreas física, mental, emocional y social que se
-            vieron afectadas por su enfermedad.
-          </p>
-          <p className="text-lg text-gray-600 leading-relaxed">
-            Los servicios ofrecidos están orientados al desarrollo personal, profesional
-            y bienestar integral. Contamos con un equipo de especialistas certificados y
-            programas diseñados para ofrecer apoyo efectivo en el proceso de
-            recuperación.
-          </p>
+        </div>
+
+        <div
+          className={
+            hasImage
+              ? "grid grid-cols-1 items-center gap-12 lg:grid-cols-2"
+              : "mx-auto max-w-3xl text-center"
+          }
+        >
+          {hasImage && (
+            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+              <CloudinaryImage
+                publicId={ABOUT_MEDIA.sectionImage}
+                alt="Instalaciones de Jóvenes Nueva Generación"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
+            </div>
+          )}
+          <div>
+            <p className="mb-6 text-lg text-gray-600 leading-relaxed">
+              CEPAAV es un centro de rehabilitación profesional que cuenta con un equipo
+              multidisciplinario de médicos, psicólogos, psiquiatras, terapeutas,
+              nutriólogos y consejeros profesionales. Todo esto para que el paciente
+              restructure su vida en las áreas física, mental, emocional y social que se
+              vieron afectadas por su enfermedad.
+            </p>
+            <p className="text-lg text-gray-600 leading-relaxed">
+              Los servicios ofrecidos están orientados al desarrollo personal, profesional
+              y bienestar integral. Contamos con un equipo de especialistas certificados y
+              programas diseñados para ofrecer apoyo efectivo en el proceso de
+              recuperación.
+            </p>
+          </div>
         </div>
 
         <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">

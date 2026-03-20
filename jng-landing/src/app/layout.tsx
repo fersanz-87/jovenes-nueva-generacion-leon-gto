@@ -36,6 +36,16 @@ export const metadata: Metadata = {
     siteName: "Jóvenes Nueva Generación A.C.",
     locale: "es_MX",
     type: "website",
+    images: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME
+      ? [
+          {
+            url: `https://res.cloudinary.com/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload/c_fill,w_1200,h_630,q_auto,f_auto/jng/general/og-image`,
+            width: 1200,
+            height: 630,
+            alt: "Jóvenes Nueva Generación - Centro de Rehabilitación",
+          },
+        ]
+      : undefined,
   },
   robots: {
     index: true,

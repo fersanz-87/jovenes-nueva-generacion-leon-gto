@@ -20,4 +20,5 @@ export interface Testimonio {
   nombre: string;
   texto: string;
   tiempo: string;
+  avatarId?: string;
 }
