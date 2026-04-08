@@ -1,3 +1,5 @@
+"use client";
+
 import { CldImage } from "next-cloudinary";
 import type { CldImageProps } from "next-cloudinary";
 
