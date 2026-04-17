@@ -20,8 +20,7 @@ export const CLOUDINARY_UPLOAD_FOLDER = "jng/uploads" as const;
 
 // Hero Section
 export const HERO_MEDIA = {
-  backgroundVideo: "jng/hero/hero-background",
-  backgroundImage: "jng/hero/hero-background-poster",
+  backgroundImage: "hero-background",
 } as const;
 
 // About Us Section
