@@ -45,7 +45,7 @@ export default function Hero() {
             &ldquo;Un Lugar Para Renacer y Aprender a Vivir&rdquo;
           </p>
 
-          <div className="mt-70 flex flex-col items-center justify-center gap-4 sm:flex-row">
+          <div className="mt-100 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
               href="https://wa.me/527202655475?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20el%20centro%20de%20rehabilitaci%C3%B3n."
               target="_blank"

@@ -25,7 +25,7 @@ export const HERO_MEDIA = {
 
 // About Us Section
 export const ABOUT_MEDIA = {
-  sectionImage: "jng/about/about-main",
+  sectionImage: "about-main",
 } as const;
 
 // Services Section
@@ -52,6 +52,6 @@ export const TESTIMONIALS_MEDIA = {
 
 // General / Shared
 export const GENERAL_MEDIA = {
-  logo: "jng/general/logo",
+  logo: "logo",
   ogImage: "jng/general/og-image",
 } as const;

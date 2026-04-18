@@ -50,13 +50,15 @@ export default function AboutUs() {
           }
         >
           {hasImage && (
-            <div className="relative aspect-[4/3] overflow-hidden rounded-2xl shadow-lg">
+            <div className="relative aspect-square overflow-hidden rounded-2xl shadow-lg">
               <CloudinaryImage
                 publicId={ABOUT_MEDIA.sectionImage}
                 alt="Instalaciones de Jóvenes Nueva Generación"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
+                crop="fill"
+                gravity="north"
               />
             </div>
           )}
