@@ -1,4 +1,5 @@
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
+import { getWhatsAppUrl, WHATSAPP_NUMBER } from "@/lib/contact";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -54,7 +55,7 @@ export default function Footer() {
               <li className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-primary-300" />
                 <a
-                  href="https://wa.me/527202655475"
+                  href={getWhatsAppUrl()}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:text-accent-400 transition-colors"

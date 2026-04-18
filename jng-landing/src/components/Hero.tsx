@@ -1,6 +1,7 @@
 import { Phone, MessageCircle, Shield } from "lucide-react";
 import CloudinaryImage from "@/components/ui/CloudinaryImage";
 import { HERO_MEDIA } from "@/lib/cloudinary";
+import { getWhatsAppUrl } from "@/lib/contact";
 
 export default function Hero() {
   return (
@@ -47,7 +48,7 @@ export default function Hero() {
 
           <div className="mt-100 flex flex-col items-center justify-center gap-4 sm:flex-row">
             <a
-              href="https://wa.me/527202655475?text=Hola%2C%20me%20gustar%C3%ADa%20recibir%20informaci%C3%B3n%20sobre%20el%20centro%20de%20rehabilitaci%C3%B3n."
+              href={getWhatsAppUrl()}
               target="_blank"
               rel="noopener noreferrer"
               className="flex w-full items-center justify-center gap-2 rounded-full bg-secondary-500 px-8 py-4 text-lg font-semibold text-white shadow-lg transition-all hover:bg-secondary-600 hover:shadow-xl sm:w-auto"
