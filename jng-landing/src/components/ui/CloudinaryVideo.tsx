@@ -45,6 +45,7 @@ export default function CloudinaryVideo({
         loop={loop}
         controls={controls}
         muted
+        sourceTypes={["webm/vp9", "mp4/h265", "mp4"]}
         transformation={{
           quality: "auto",
         }}

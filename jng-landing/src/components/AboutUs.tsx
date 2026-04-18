@@ -1,5 +1,6 @@
 import { Heart, Users, Brain, ShieldCheck } from "lucide-react";
 import CloudinaryImage from "@/components/ui/CloudinaryImage";
+import CloudinaryVideo from "@/components/ui/CloudinaryVideo";
 import { ABOUT_MEDIA } from "@/lib/cloudinary";
 
 const pilares = [
@@ -13,7 +14,7 @@ const pilares = [
     icono: Users,
     titulo: "Equipo Multidisciplinario",
     descripcion:
-      "Médicos, psicólogos, psiquiatras, terapeutas, nutriólogos y consejeros profesionales.",
+      "Doctor, psicólogos, INAEBA, terapias espirituales y consejeros en adicciones.",
   },
   {
     icono: Brain,
@@ -31,6 +32,7 @@ const pilares = [
 
 export default function AboutUs() {
   const hasImage = !!ABOUT_MEDIA.sectionImage;
+  const hasVideo = !!ABOUT_MEDIA.sectionVideo;
 
   return (
     <section id="nosotros" className="bg-gray-50 py-20">
@@ -64,20 +66,45 @@ export default function AboutUs() {
           )}
           <div>
             <p className="mb-6 text-lg text-gray-600 leading-relaxed">
-              CEPAAV es un centro de rehabilitación profesional que cuenta con un equipo
-              multidisciplinario de médicos, psicólogos, psiquiatras, terapeutas,
-              nutriólogos y consejeros profesionales. Todo esto para que el paciente
-              restructure su vida en las áreas física, mental, emocional y social que se
-              vieron afectadas por su enfermedad.
+              CEPAAV es un centro de rehabilitación profesional que cuenta con
+              un equipo multidisciplinario de consejeros en adicciones, doctor,
+              psicólogo, INAEBA, terapias espirituales, asi como una alberca y
+              espacios para recreación física. Todo esto para que el paciente
+              reestructure su vida en las áreas física, mental, emocional y
+              social que se vieron afectadas por su enfermedad.
             </p>
             <p className="text-lg text-gray-600 leading-relaxed">
-              Los servicios ofrecidos están orientados al desarrollo personal, profesional
-              y bienestar integral. Contamos con un equipo de especialistas certificados y
-              programas diseñados para ofrecer apoyo efectivo en el proceso de
-              recuperación.
+              Los servicios ofrecidos están orientados al desarrollo personal,
+              profesional y bienestar integral. Contamos con un equipo de
+              especialistas certificados y programas diseñados para ofrecer
+              apoyo efectivo en el proceso de recuperación.
             </p>
           </div>
         </div>
+
+        {hasVideo && (
+          <div className="mt-12">
+            <h3 className="mb-6 text-center text-xl font-semibold text-gray-800">
+              Conoce más acerca de nuestro centro de rehabilitación!
+            </h3>
+            <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl shadow-lg">
+              <CloudinaryVideo
+                publicId={ABOUT_MEDIA.sectionVideo}
+                width={1280}
+                height={720}
+                autoPlay
+                loop
+                controls
+                className="aspect-video w-full"
+                fallback={
+                  <div className="flex aspect-video items-center justify-center bg-gray-200 text-gray-500">
+                    Video no disponible
+                  </div>
+                }
+              />
+            </div>
+          </div>
+        )}
 
         <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {pilares.map((pilar) => (

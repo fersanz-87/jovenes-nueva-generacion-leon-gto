@@ -26,6 +26,7 @@ export const HERO_MEDIA = {
 // About Us Section
 export const ABOUT_MEDIA = {
   sectionImage: "about-main",
+  sectionVideo: "about-video",
 } as const;
 
 // Services Section
