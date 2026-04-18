@@ -10,7 +10,7 @@ const telefonos = [
 
 export default function Caipra() {
   return (
-    <section id="caipra" className="bg-gradient-to-br from-primary-50 to-secondary-50 py-20">
+    <section id="caipra" className="bg-linear-to-br from-primary-50 to-secondary-50 py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl bg-white p-8 shadow-lg sm:p-12">

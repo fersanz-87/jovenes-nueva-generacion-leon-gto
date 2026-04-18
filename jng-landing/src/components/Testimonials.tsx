@@ -1,6 +1,4 @@
 import { Quote } from "lucide-react";
-import CloudinaryImage from "@/components/ui/CloudinaryImage";
-import { TESTIMONIALS_MEDIA } from "@/lib/cloudinary";
 
 const testimonios = [
   {
@@ -8,28 +6,24 @@ const testimonios = [
     texto:
       "Llegué al centro sin esperanza, pero el equipo de profesionales me ayudó a reconstruir mi vida. Hoy tengo 2 años limpio y una relación restaurada con mi familia. Estaré eternamente agradecido.",
     tiempo: "2 años en recuperación",
-    avatarId: TESTIMONIALS_MEDIA.avatars.carlosM,
   },
   {
     nombre: "María L.",
     texto:
       "La sección femenil CAIPRA me brindó un espacio seguro donde pude trabajar en mi recuperación. Las terapias grupales y el apoyo del psicólogo fueron fundamentales para mi proceso.",
     tiempo: "1 año en recuperación",
-    avatarId: TESTIMONIALS_MEDIA.avatars.mariaL,
   },
   {
     nombre: "Roberto G.",
     texto:
       "La terapia familiar cambió la dinámica de mi hogar. Mi hijo recibió la atención que necesitaba y nosotros aprendimos a ser un verdadero apoyo para él. Recomiendo ampliamente este centro.",
     tiempo: "Familiar de paciente",
-    avatarId: TESTIMONIALS_MEDIA.avatars.robertoG,
   },
   {
     nombre: "Ana P.",
     texto:
       "El programa integral que ofrecen realmente marca la diferencia. Desde la atención médica hasta los talleres de desarrollo humano, cada aspecto está diseñado para ayudarte a salir adelante.",
     tiempo: "3 años en recuperación",
-    avatarId: TESTIMONIALS_MEDIA.avatars.anaP,
   },
 ];
 
@@ -59,20 +53,9 @@ export default function Testimonials() {
                 &ldquo;{testimonio.texto}&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <CloudinaryImage
-                  publicId={testimonio.avatarId}
-                  alt={testimonio.nombre}
-                  width={40}
-                  height={40}
-                  crop="fill"
-                  gravity="face"
-                  className="h-10 w-10 rounded-full object-cover"
-                  fallback={
-                    <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-sm font-bold text-white">
-                      {testimonio.nombre.charAt(0)}
-                    </div>
-                  }
-                />
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary-500 text-sm font-bold text-white">
+                  {testimonio.nombre.charAt(0)}
+                </div>
                 <div>
                   <p className="font-semibold text-gray-900">{testimonio.nombre}</p>
                   <p className="text-sm text-gray-500">{testimonio.tiempo}</p>

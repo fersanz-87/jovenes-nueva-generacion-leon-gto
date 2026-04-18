@@ -111,13 +111,13 @@ export default function Map() {
             />
           </div>
 
-          <div className="mt-6 flex flex-col items-center gap-2 text-center text-gray-600">
+          <div className="mt-6 flex flex-col items-center gap-3 text-center font-sans text-lg font-bold text-primary-700 sm:text-xl">
             <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-primary-500" />
+              <MapPin className="h-5 w-5 shrink-0 text-primary-500" />
               <span>Calle Tzulá #124, Col. Los Castillos, León, Guanajuato, México</span>
             </div>
             <div className="flex items-center gap-2">
-              <Clock className="h-4 w-4 text-primary-500" />
+              <Clock className="h-5 w-5 shrink-0 text-primary-500" />
               <span>Horario de visitas: Domingos de 12:00 PM a 6:00 PM</span>
             </div>
           </div>

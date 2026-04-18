@@ -30,13 +30,13 @@ export const ABOUT_MEDIA = {
 
 // Services Section
 export const SERVICES_MEDIA = {
-  sectionImage: "jng/services/services-main",
+  sectionImage: "services-main",
   sectionVideo: "jng/services/services-video",
 } as const;
 
 // CAIPRA Section
 export const CAIPRA_MEDIA = {
-  sectionImage: "jng/caipra/caipra-main",
+  sectionImage: "caipra-main",
   sectionVideo: "jng/caipra/caipra-video",
 } as const;
 

@@ -54,6 +54,8 @@ export default function Services() {
               alt="Instalaciones y servicios del centro"
               width={600}
               height={700}
+              crop="fill"
+              gravity="north"
               className="w-full rounded-2xl object-cover shadow-lg"
               sizes="(max-width: 1024px) 100vw, 50vw"
               fallback={null}
