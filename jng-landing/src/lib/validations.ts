@@ -23,3 +23,14 @@ export const contactSchema = z.object({
 });
 
 export type ContactFormInput = z.infer<typeof contactSchema>;
+
+/**
+ * Strip characters that could enable SMTP header injection.
+ * Apply to any user-controlled value that may land in email headers
+ * (subject, reply-to, display name in From, etc.).
+ */
+export function sanitizeEmailHeader(input: string): string {
+  // Remove \r, \n, and all other control characters (U+0000–U+001F, U+007F)
+  // eslint-disable-next-line no-control-regex
+  return input.replace(/[\r\n\x00-\x1f\x7f]/g, "").trim();
+}

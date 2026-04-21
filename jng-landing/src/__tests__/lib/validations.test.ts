@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { contactSchema } from "@/lib/validations";
+import { contactSchema, sanitizeEmailHeader } from "@/lib/validations";
 
 describe("contactSchema", () => {
   const validData = {
@@ -129,5 +129,37 @@ describe("contactSchema", () => {
       });
       expect(result.success).toBe(false);
     });
+  });
+});
+
+describe("sanitizeEmailHeader", () => {
+  it("passes through clean strings", () => {
+    expect(sanitizeEmailHeader("Hello World")).toBe("Hello World");
+  });
+
+  it("strips carriage return and newline", () => {
+    expect(sanitizeEmailHeader("line1\r\nBcc: evil@hacker.com")).toBe(
+      "line1Bcc: evil@hacker.com"
+    );
+  });
+
+  it("strips lone \\r and \\n", () => {
+    expect(sanitizeEmailHeader("a\rb\nc")).toBe("abc");
+  });
+
+  it("strips control characters (null byte, tab, etc.)", () => {
+    expect(sanitizeEmailHeader("hello\x00\x01\x1fworld")).toBe("helloworld");
+  });
+
+  it("strips DEL character (0x7f)", () => {
+    expect(sanitizeEmailHeader("test\x7fvalue")).toBe("testvalue");
+  });
+
+  it("trims whitespace", () => {
+    expect(sanitizeEmailHeader("  spaced  ")).toBe("spaced");
+  });
+
+  it("handles empty string", () => {
+    expect(sanitizeEmailHeader("")).toBe("");
   });
 });
