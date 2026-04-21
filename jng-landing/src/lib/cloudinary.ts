@@ -1,9 +1,4 @@
 /**
- * Default folder for uploads from the app (widget / API). Align with your signed upload preset if needed.
- */
-export const CLOUDINARY_UPLOAD_FOLDER = "jng/uploads" as const;
-
-/**
  * Centralized Cloudinary media configuration.
  *
  * All public IDs for images and videos served from Cloudinary are defined here.

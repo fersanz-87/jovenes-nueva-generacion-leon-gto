@@ -1,6 +1,5 @@
 import { describe, it, expect } from "vitest";
 import {
-  CLOUDINARY_UPLOAD_FOLDER,
   HERO_MEDIA,
   ABOUT_MEDIA,
   SERVICES_MEDIA,
@@ -10,10 +9,6 @@ import {
 } from "@/lib/cloudinary";
 
 describe("cloudinary media configuration", () => {
-  it("CLOUDINARY_UPLOAD_FOLDER is defined", () => {
-    expect(CLOUDINARY_UPLOAD_FOLDER).toBe("jng/uploads");
-  });
-
   it("HERO_MEDIA has a backgroundImage", () => {
     expect(HERO_MEDIA.backgroundImage).toBeDefined();
     expect(typeof HERO_MEDIA.backgroundImage).toBe("string");
