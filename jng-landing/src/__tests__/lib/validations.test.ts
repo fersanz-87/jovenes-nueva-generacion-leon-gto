@@ -60,10 +60,34 @@ describe("contactSchema", () => {
   });
 
   describe("telefono validation", () => {
-    it("accepts phone with spaces and dashes", () => {
+    it("accepts MX local format with spaces", () => {
+      const result = contactSchema.safeParse({
+        ...validData,
+        telefono: "477 123 4567",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts formatted international with spaces and dashes", () => {
       const result = contactSchema.safeParse({
         ...validData,
         telefono: "+52 (477) 123-4567",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts E.164 format", () => {
+      const result = contactSchema.safeParse({
+        ...validData,
+        telefono: "+524771234567",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("accepts local format starting with parenthesis", () => {
+      const result = contactSchema.safeParse({
+        ...validData,
+        telefono: "(477) 123-4567",
       });
       expect(result.success).toBe(true);
     });
@@ -88,6 +112,30 @@ describe("contactSchema", () => {
       const result = contactSchema.safeParse({
         ...validData,
         telefono: "1".repeat(21),
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects junk like +++++", () => {
+      const result = contactSchema.safeParse({
+        ...validData,
+        telefono: "+++++++++",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects + followed by zero", () => {
+      const result = contactSchema.safeParse({
+        ...validData,
+        telefono: "+04771234567",
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("rejects empty telefono", () => {
+      const result = contactSchema.safeParse({
+        ...validData,
+        telefono: "",
       });
       expect(result.success).toBe(false);
     });
