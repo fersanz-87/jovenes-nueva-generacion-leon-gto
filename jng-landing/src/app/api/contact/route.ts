@@ -85,7 +85,8 @@ export async function POST(request: Request) {
       message:
         "¡Gracias por contactarnos! Nos comunicaremos contigo lo antes posible.",
     });
-  } catch {
+  } catch (error) {
+    console.error("[contact] unexpected error", error);
     return NextResponse.json(
       {
         success: false,
