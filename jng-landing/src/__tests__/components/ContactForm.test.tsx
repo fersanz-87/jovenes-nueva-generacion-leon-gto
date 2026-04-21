@@ -212,7 +212,7 @@ describe("ContactForm", () => {
 
     expect(mockFetch).toHaveBeenCalledWith("/api/contact", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json", "x-csrf-token": "" },
       body: JSON.stringify({
         nombre: "María",
         telefono: "5551234567",

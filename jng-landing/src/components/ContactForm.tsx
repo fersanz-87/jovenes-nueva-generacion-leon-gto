@@ -36,9 +36,18 @@ export default function ContactForm() {
     setErrors({});
 
     try {
+      // Read CSRF token from cookie for double-submit pattern
+      const csrfToken = document.cookie
+        .split("; ")
+        .find((c) => c.startsWith("csrf-token="))
+        ?.split("=")[1] ?? "";
+
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          "x-csrf-token": csrfToken,
+        },
         body: JSON.stringify(formData),
       });
 
