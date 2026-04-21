@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { _resetStore } from "@/lib/rate-limit";
 
 vi.mock("@/lib/validations", async () => {
   const actual = await vi.importActual<typeof import("@/lib/validations")>(
@@ -21,6 +22,7 @@ describe("POST /api/contact", () => {
   let consoleSpy: ReturnType<typeof vi.spyOn>;
 
   beforeEach(() => {
+    _resetStore();
     consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
   });
 

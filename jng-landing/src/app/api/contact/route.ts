@@ -1,5 +1,8 @@
 import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validations";
+import { rateLimit } from "@/lib/rate-limit";
+
+const RATE_LIMIT = { limit: 5, windowMs: 60_000 } as const;
 
 function sanitize(str: string): string {
   return str
@@ -11,8 +14,34 @@ function sanitize(str: string): string {
     .trim();
 }
 
+function getClientIp(request: Request): string {
+  const forwarded = request.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0].trim();
+  }
+  return "unknown";
+}
+
 export async function POST(request: Request) {
   try {
+    // Rate limit by client IP
+    const ip = getClientIp(request);
+    const rl = await rateLimit(ip, RATE_LIMIT);
+
+    if (!rl.ok) {
+      const retryAfter = Math.ceil((rl.resetAt - Date.now()) / 1000);
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Demasiadas solicitudes. Intenta de nuevo en un momento.",
+        },
+        {
+          status: 429,
+          headers: { "Retry-After": String(Math.max(retryAfter, 1)) },
+        }
+      );
+    }
+
     const body = await request.json();
 
     // Check honeypot
