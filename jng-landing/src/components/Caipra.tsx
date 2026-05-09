@@ -1,12 +1,7 @@
 import { Phone, Heart, Shield } from "lucide-react";
 import CloudinaryImage from "@/components/ui/CloudinaryImage";
 import { CAIPRA_MEDIA } from "@/lib/cloudinary";
-
-const telefonos = [
-  { numero: "477 705 9608", href: "tel:+524777059608" },
-  { numero: "477 630 0533", href: "tel:+524776300533" },
-  { numero: "477 449 1551", href: "tel:+524774491551" },
-];
+import { OFFICE_PHONES } from "@/lib/contact";
 
 export default function Caipra() {
   return (
@@ -52,14 +47,14 @@ export default function Caipra() {
             </div>
 
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              {telefonos.map((tel) => (
+              {OFFICE_PHONES.map((tel) => (
                 <a
-                  key={tel.numero}
+                  key={tel.display}
                   href={tel.href}
                   className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-pink-200 bg-pink-50 px-6 py-3 font-medium text-pink-700 transition-all hover:bg-pink-500 hover:text-white hover:border-pink-500 sm:w-auto"
                 >
                   <Phone className="h-4 w-4" />
-                  {tel.numero}
+                  {tel.display}
                 </a>
               ))}
             </div>

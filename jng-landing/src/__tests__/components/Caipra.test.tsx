@@ -28,12 +28,12 @@ describe("Caipra", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders all 3 phone links", () => {
+  it("renders all 2 phone links", () => {
     render(<Caipra />);
     const phoneLinks = screen.getAllByRole("link").filter(
       (link) => link.getAttribute("href")?.startsWith("tel:")
     );
-    expect(phoneLinks).toHaveLength(3);
+    expect(phoneLinks).toHaveLength(2);
   });
 
   it("renders the address", () => {

@@ -1,5 +1,6 @@
 import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import ContactForm from "./ContactForm";
+import { CONTACT_EMAIL, OFFICE_PHONES } from "@/lib/contact";
 
 export default function Map() {
   return (
@@ -27,17 +28,14 @@ export default function Map() {
                   <Phone className="mt-1 h-5 w-5 shrink-0 text-primary-500" />
                   <div>
                     <p className="font-medium text-gray-900">Teléfonos</p>
-                    <a href="tel:+524779302775" className="text-gray-600 hover:text-primary-500">
-                      477 930 2775
-                    </a>
-                    <br />
-                    <a href="tel:+527202655475" className="text-gray-600 hover:text-primary-500">
-                      720 265 5475
-                    </a>
-                    <br />
-                    <a href="tel:+524772631485" className="text-gray-600 hover:text-primary-500">
-                      477 263 1485
-                    </a>
+                    {OFFICE_PHONES.map((tel, i) => (
+                      <span key={tel.display}>
+                        {i > 0 && <br />}
+                        <a href={tel.href} className="text-gray-600 hover:text-primary-500">
+                          {tel.display}
+                        </a>
+                      </span>
+                    ))}
                   </div>
                 </div>
 
@@ -46,10 +44,10 @@ export default function Map() {
                   <div>
                     <p className="font-medium text-gray-900">Email</p>
                     <a
-                      href="mailto:jn_generacion@hotmail.com"
+                      href={`mailto:${CONTACT_EMAIL}`}
                       className="text-gray-600 hover:text-primary-500"
                     >
-                      jn_generacion@hotmail.com
+                      {CONTACT_EMAIL}
                     </a>
                   </div>
                 </div>
