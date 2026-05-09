@@ -25,13 +25,12 @@ describe("Map", () => {
     render(<Map />);
     expect(screen.getByText("477 930 2775")).toBeInTheDocument();
     expect(screen.getByText("720 265 5475")).toBeInTheDocument();
-    expect(screen.getByText("477 263 1485")).toBeInTheDocument();
   });
 
   it("renders the email address", () => {
     render(<Map />);
     expect(
-      screen.getByText("jn_generacion@hotmail.com")
+      screen.getByText("cromo181@gmail.com")
     ).toBeInTheDocument();
   });
 

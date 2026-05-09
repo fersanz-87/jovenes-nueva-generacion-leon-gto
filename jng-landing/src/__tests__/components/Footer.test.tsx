@@ -33,17 +33,17 @@ describe("Footer", () => {
     const phoneLinks = screen
       .getAllByRole("link")
       .filter((a) => a.getAttribute("href")?.startsWith("tel:"));
-    expect(phoneLinks.length).toBeGreaterThanOrEqual(3);
+    expect(phoneLinks.length).toBeGreaterThanOrEqual(2);
   });
 
   it("renders the email link", () => {
     render(<Footer />);
     const emailLink = screen.getByRole("link", {
-      name: /jn_generacion@hotmail.com/i,
+      name: /cromo181@gmail.com/i,
     });
     expect(emailLink).toHaveAttribute(
       "href",
-      "mailto:jn_generacion@hotmail.com"
+      "mailto:cromo181@gmail.com"
     );
   });
 
