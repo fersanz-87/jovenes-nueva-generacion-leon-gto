@@ -9,7 +9,7 @@ import {
 
 const PROTECTED_API_ROUTES = ["/api/contact"];
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Validate CSRF on mutating API requests
