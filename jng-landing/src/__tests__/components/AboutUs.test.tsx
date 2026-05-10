@@ -6,11 +6,7 @@ vi.mock("@/components/ui/CloudinaryImage", () => ({
   default: ({ alt }: { alt: string }) => <img alt={alt} data-testid="about-img" />,
 }));
 
-vi.mock("@/components/ui/CloudinaryVideo", () => ({
-  default: ({ className }: { className?: string }) => (
-    <div data-testid="about-video" className={className} />
-  ),
-}));
+vi.stubEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME", "test-cloud");
 
 describe("AboutUs", () => {
   it('renders the "Sobre Nosotros" heading', () => {
@@ -45,9 +41,10 @@ describe("AboutUs", () => {
     expect(screen.getByTestId("about-img")).toBeInTheDocument();
   });
 
-  it("renders the section video", () => {
-    render(<AboutUs />);
-    expect(screen.getByTestId("about-video")).toBeInTheDocument();
+  it("renders all section videos", () => {
+    const { container } = render(<AboutUs />);
+    const videos = container.querySelectorAll("video");
+    expect(videos).toHaveLength(3);
   });
 
   it("has the correct section id for navigation", () => {

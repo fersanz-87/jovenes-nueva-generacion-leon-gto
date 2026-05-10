@@ -15,9 +15,10 @@ describe("cloudinary media configuration", () => {
     expect(HERO_MEDIA.backgroundImage.length).toBeGreaterThan(0);
   });
 
-  it("ABOUT_MEDIA has sectionImage and sectionVideo", () => {
+  it("ABOUT_MEDIA has sectionImage and sectionVideos", () => {
     expect(ABOUT_MEDIA.sectionImage).toBeDefined();
-    expect(ABOUT_MEDIA.sectionVideo).toBeDefined();
+    expect(ABOUT_MEDIA.sectionVideos).toBeDefined();
+    expect(ABOUT_MEDIA.sectionVideos.length).toBeGreaterThan(0);
   });
 
   it("SERVICES_MEDIA has sectionImage and sectionVideo", () => {
