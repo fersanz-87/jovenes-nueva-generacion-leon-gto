@@ -29,9 +29,10 @@ describe("Services", () => {
     }
   });
 
-  it("renders the section image", () => {
+  it("renders both section images", () => {
     render(<Services />);
-    expect(screen.getByTestId("services-img")).toBeInTheDocument();
+    const images = screen.getAllByTestId("services-img");
+    expect(images).toHaveLength(2);
   });
 
   it("has the correct section id", () => {
