@@ -1,7 +1,8 @@
 import { Heart, Users, Brain, ShieldCheck } from "lucide-react";
 import CloudinaryImage from "@/components/ui/CloudinaryImage";
-import CloudinaryVideo from "@/components/ui/CloudinaryVideo";
 import { ABOUT_MEDIA } from "@/lib/cloudinary";
+
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
 const pilares = [
   {
@@ -32,7 +33,7 @@ const pilares = [
 
 export default function AboutUs() {
   const hasImage = !!ABOUT_MEDIA.sectionImage;
-  const hasVideo = !!ABOUT_MEDIA.sectionVideo;
+  const hasVideos = !!cloudName && ABOUT_MEDIA.sectionVideos.length > 0;
 
   return (
     <section id="nosotros" className="bg-gray-50 py-20">
@@ -82,26 +83,45 @@ export default function AboutUs() {
           </div>
         </div>
 
-        {hasVideo && (
+        {hasVideos && (
           <div className="mt-12">
             <h3 className="mb-6 text-center text-xl font-semibold text-gray-800">
               Conoce más acerca de nuestro centro de rehabilitación!
             </h3>
-            <div className="mx-auto max-w-4xl overflow-hidden rounded-2xl shadow-lg">
-              <CloudinaryVideo
-                publicId={ABOUT_MEDIA.sectionVideo}
-                width={1280}
-                height={720}
-                autoPlay
-                loop
-                controls
-                className="aspect-video w-full"
-                fallback={
-                  <div className="flex aspect-video items-center justify-center bg-gray-200 text-gray-500">
-                    Video no disponible
+            <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-3">
+              {ABOUT_MEDIA.sectionVideos.map((video) => (
+                <div
+                  key={video.id}
+                  className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg"
+                >
+                  <div className="px-4 pt-4 pb-3 sm:px-5 sm:pt-5 sm:pb-4">
+                    <h4 className="text-center text-base font-semibold text-primary-700 sm:text-lg">
+                      {video.title}
+                    </h4>
                   </div>
-                }
-              />
+                  <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+                    <video
+                      className="aspect-video w-full rounded-xl"
+                      autoPlay
+                      loop
+                      muted
+                      controls
+                      playsInline
+                      preload="metadata"
+                      aria-label={video.title}
+                    >
+                      <source
+                        src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${video.id}.webm`}
+                        type="video/webm"
+                      />
+                      <source
+                        src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${video.id}.mp4`}
+                        type="video/mp4"
+                      />
+                    </video>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         )}

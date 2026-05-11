@@ -1,7 +1,8 @@
 import { Phone, Heart, Shield } from "lucide-react";
-import CloudinaryImage from "@/components/ui/CloudinaryImage";
 import { CAIPRA_MEDIA } from "@/lib/cloudinary";
 import { OFFICE_PHONES } from "@/lib/contact";
+
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
 export default function Caipra() {
   return (
@@ -9,16 +10,27 @@ export default function Caipra() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl bg-white p-8 shadow-lg sm:p-12">
-            {/* Section image */}
-            <CloudinaryImage
-              publicId={CAIPRA_MEDIA.sectionImage}
-              alt="Sección femenil CAIPRA"
-              width={800}
-              height={400}
-              className="mb-8 w-full rounded-2xl object-cover"
-              sizes="(max-width: 896px) 100vw, 800px"
-              fallback={null}
-            />
+            {/* Section video */}
+            <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-2xl">
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Instalaciones de CAIPRA - Clínica de Rehabilitación Femenil"
+              >
+                <source
+                  src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${CAIPRA_MEDIA.sectionVideo}.webm`}
+                  type="video/webm"
+                />
+                <source
+                  src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${CAIPRA_MEDIA.sectionVideo}.mp4`}
+                  type="video/mp4"
+                />
+              </video>
+            </div>
 
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100">

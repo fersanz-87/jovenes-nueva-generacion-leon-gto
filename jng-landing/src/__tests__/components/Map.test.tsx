@@ -21,7 +21,7 @@ describe("Map", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders contact info: phone numbers", () => {
+  it("renders exactly 2 phone numbers with labels", () => {
     render(<Map />);
     expect(screen.getByText("477 930 2775")).toBeInTheDocument();
     expect(screen.getByText("720 265 5475")).toBeInTheDocument();

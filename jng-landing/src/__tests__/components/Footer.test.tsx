@@ -28,7 +28,7 @@ describe("Footer", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders phone contact links", () => {
+  it("renders exactly 2 phone contact links with labels", () => {
     render(<Footer />);
     const phoneLinks = screen
       .getAllByRole("link")

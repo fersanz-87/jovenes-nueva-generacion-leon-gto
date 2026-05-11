@@ -12,6 +12,7 @@ const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
 interface CloudinaryVideoProps {
   publicId: string;
+  id?: string;
   width: number;
   height: number;
   autoPlay?: boolean;
@@ -23,6 +24,7 @@ interface CloudinaryVideoProps {
 
 export default function CloudinaryVideo({
   publicId,
+  id,
   width,
   height,
   autoPlay = true,
@@ -38,6 +40,7 @@ export default function CloudinaryVideo({
   return (
     <div className={className}>
       <CldVideoPlayer
+        id={id ?? publicId}
         src={publicId}
         width={width}
         height={height}

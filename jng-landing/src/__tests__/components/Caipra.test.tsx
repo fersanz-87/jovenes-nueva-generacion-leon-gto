@@ -2,9 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Caipra from "@/components/Caipra";
 
-vi.mock("@/components/ui/CloudinaryImage", () => ({
-  default: ({ alt }: { alt: string }) => <img alt={alt} data-testid="caipra-img" />,
-}));
+vi.stubEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME", "test-cloud");
 
 describe("Caipra", () => {
   it("renders the CAIPRA heading", () => {

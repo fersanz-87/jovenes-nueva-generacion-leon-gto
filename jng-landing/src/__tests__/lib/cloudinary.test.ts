@@ -15,19 +15,25 @@ describe("cloudinary media configuration", () => {
     expect(HERO_MEDIA.backgroundImage.length).toBeGreaterThan(0);
   });
 
-  it("ABOUT_MEDIA has sectionImage and sectionVideo", () => {
+  it("ABOUT_MEDIA has sectionImage and sectionVideos with id and title", () => {
     expect(ABOUT_MEDIA.sectionImage).toBeDefined();
-    expect(ABOUT_MEDIA.sectionVideo).toBeDefined();
+    expect(ABOUT_MEDIA.sectionVideos).toBeDefined();
+    expect(ABOUT_MEDIA.sectionVideos.length).toBeGreaterThan(0);
+    for (const video of ABOUT_MEDIA.sectionVideos) {
+      expect(video.id).toBeDefined();
+      expect(video.title).toBeDefined();
+    }
   });
 
   it("SERVICES_MEDIA has sectionImage and sectionVideo", () => {
     expect(SERVICES_MEDIA.sectionImage).toBeDefined();
+    expect(SERVICES_MEDIA.sectionImage).toBe("services-main-2");
     expect(SERVICES_MEDIA.sectionVideo).toBeDefined();
   });
 
-  it("CAIPRA_MEDIA has sectionImage and sectionVideo", () => {
-    expect(CAIPRA_MEDIA.sectionImage).toBeDefined();
+  it("CAIPRA_MEDIA has sectionVideo", () => {
     expect(CAIPRA_MEDIA.sectionVideo).toBeDefined();
+    expect(CAIPRA_MEDIA.sectionVideo).toBe("about-video-4");
   });
 
   it("TESTIMONIALS_MEDIA has avatar entries", () => {
