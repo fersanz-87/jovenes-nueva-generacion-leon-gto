@@ -47,26 +47,17 @@ export default function Services() {
             ))}
           </div>
 
-          {/* Section images stacked */}
-          <div className="flex flex-col gap-4 sm:gap-6">
-            {SERVICES_MEDIA.sectionImages.map((publicId, index) => (
-              <CloudinaryImage
-                key={publicId}
-                publicId={publicId}
-                alt={
-                  index === 0
-                    ? "Instalaciones y servicios del centro"
-                    : "Servicios adicionales del centro"
-                }
-                width={600}
-                height={400}
-                crop="fill"
-                gravity="north"
-                className="w-full rounded-2xl object-cover shadow-lg"
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                fallback={null}
-              />
-            ))}
+          {/* Section image */}
+          <div className="flex items-center justify-center">
+            <CloudinaryImage
+              publicId={SERVICES_MEDIA.sectionImage}
+              alt="Instalaciones y servicios del centro"
+              width={800}
+              height={600}
+              className="w-full rounded-2xl shadow-lg"
+              sizes="(max-width: 1024px) 100vw, 50vw"
+              fallback={null}
+            />
           </div>
         </div>
       </div>

@@ -25,9 +25,9 @@ describe("cloudinary media configuration", () => {
     }
   });
 
-  it("SERVICES_MEDIA has sectionImages and sectionVideo", () => {
-    expect(SERVICES_MEDIA.sectionImages).toBeDefined();
-    expect(SERVICES_MEDIA.sectionImages).toHaveLength(2);
+  it("SERVICES_MEDIA has sectionImage and sectionVideo", () => {
+    expect(SERVICES_MEDIA.sectionImage).toBeDefined();
+    expect(SERVICES_MEDIA.sectionImage).toBe("services-main-2");
     expect(SERVICES_MEDIA.sectionVideo).toBeDefined();
   });
 

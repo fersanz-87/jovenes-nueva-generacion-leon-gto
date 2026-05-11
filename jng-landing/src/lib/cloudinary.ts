@@ -38,10 +38,7 @@ export const ABOUT_MEDIA = {
 
 // Services Section
 export const SERVICES_MEDIA = {
-  sectionImages: [
-    "services-main",
-    "services-main-2",
-  ],
+  sectionImage: "services-main-2",
   sectionVideo: "jng/services/services-video",
 } as const;
 

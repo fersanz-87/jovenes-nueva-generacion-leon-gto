@@ -11,7 +11,7 @@ export default function Hero() {
     >
       {/* Background image */}
       <div className="absolute inset-0 z-0 bg-white">
-        <div className="relative h-full w-full translate-y-[8%]">
+        <div className="relative h-full w-full translate-y-[14%]">
           <CloudinaryImage
             publicId={HERO_MEDIA.backgroundImage}
             alt="Centro de rehabilitación Jóvenes Nueva Generación"
