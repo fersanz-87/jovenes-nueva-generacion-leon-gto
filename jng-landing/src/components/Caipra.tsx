@@ -2,6 +2,8 @@ import { Phone, Heart, Shield } from "lucide-react";
 import { CAIPRA_MEDIA } from "@/lib/cloudinary";
 import { OFFICE_PHONES } from "@/lib/contact";
 
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+
 export default function Caipra() {
   return (
     <section id="caipra" className="bg-linear-to-br from-primary-50 to-secondary-50 py-20">
