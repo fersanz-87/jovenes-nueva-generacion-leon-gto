@@ -89,26 +89,37 @@ export default function AboutUs() {
               Conoce más acerca de nuestro centro de rehabilitación!
             </h3>
             <div className="mx-auto grid max-w-7xl grid-cols-1 gap-6 md:grid-cols-3">
-              {ABOUT_MEDIA.sectionVideos.map((videoId) => (
-                <div key={videoId} className="overflow-hidden rounded-2xl shadow-lg">
-                  <video
-                    className="aspect-video w-full"
-                    autoPlay
-                    loop
-                    muted
-                    controls
-                    playsInline
-                    preload="metadata"
-                  >
-                    <source
-                      src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${videoId}.webm`}
-                      type="video/webm"
-                    />
-                    <source
-                      src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${videoId}.mp4`}
-                      type="video/mp4"
-                    />
-                  </video>
+              {ABOUT_MEDIA.sectionVideos.map((video) => (
+                <div
+                  key={video.id}
+                  className="flex flex-col overflow-hidden rounded-2xl bg-white shadow-lg"
+                >
+                  <div className="px-4 pt-4 pb-3 sm:px-5 sm:pt-5 sm:pb-4">
+                    <h4 className="text-center text-base font-semibold text-primary-700 sm:text-lg">
+                      {video.title}
+                    </h4>
+                  </div>
+                  <div className="px-4 pb-4 sm:px-5 sm:pb-5">
+                    <video
+                      className="aspect-video w-full rounded-xl"
+                      autoPlay
+                      loop
+                      muted
+                      controls
+                      playsInline
+                      preload="metadata"
+                      aria-label={video.title}
+                    >
+                      <source
+                        src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${video.id}.webm`}
+                        type="video/webm"
+                      />
+                      <source
+                        src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${video.id}.mp4`}
+                        type="video/mp4"
+                      />
+                    </video>
+                  </div>
                 </div>
               ))}
             </div>

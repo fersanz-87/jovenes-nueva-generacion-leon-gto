@@ -19,14 +19,22 @@ export const HERO_MEDIA = {
 } as const;
 
 // About Us Section
+export interface AboutVideo {
+  readonly id: string;
+  readonly title: string;
+}
+
 export const ABOUT_MEDIA = {
   sectionImage: "about-main",
   sectionVideos: [
-    "about-video",
-    "about-video-2",
-    "about-video-3",
+    { id: "about-video",   title: "Información General" },
+    { id: "about-video-2", title: "Junta espiritual todos los días Jueves" },
+    { id: "about-video-3", title: "Convivio femenil 1 día a la semana" },
   ],
-} as const;
+} as const satisfies {
+  sectionImage: string;
+  sectionVideos: readonly AboutVideo[];
+};
 
 // Services Section
 export const SERVICES_MEDIA = {

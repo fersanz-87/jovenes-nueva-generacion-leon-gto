@@ -41,10 +41,13 @@ describe("AboutUs", () => {
     expect(screen.getByTestId("about-img")).toBeInTheDocument();
   });
 
-  it("renders all section videos", () => {
+  it("renders all section videos with titles", () => {
     const { container } = render(<AboutUs />);
     const videos = container.querySelectorAll("video");
     expect(videos).toHaveLength(3);
+    expect(screen.getByText("Información General")).toBeInTheDocument();
+    expect(screen.getByText("Junta espiritual todos los días Jueves")).toBeInTheDocument();
+    expect(screen.getByText("Convivio femenil 1 día a la semana")).toBeInTheDocument();
   });
 
   it("has the correct section id for navigation", () => {
