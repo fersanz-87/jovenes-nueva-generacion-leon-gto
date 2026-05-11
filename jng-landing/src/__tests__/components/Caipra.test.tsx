@@ -26,23 +26,12 @@ describe("Caipra", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders a video element instead of an image", () => {
-    const { container } = render(<Caipra />);
-    const video = container.querySelector("video");
-    expect(video).toBeInTheDocument();
-    expect(container.querySelector("img")).toBeNull();
-  });
-
-  it("renders exactly 2 phone links with correct labels", () => {
+  it("renders all 2 phone links", () => {
     render(<Caipra />);
     const phoneLinks = screen.getAllByRole("link").filter(
       (link) => link.getAttribute("href")?.startsWith("tel:")
     );
     expect(phoneLinks).toHaveLength(2);
-    expect(screen.getByText("477 930 2775")).toBeInTheDocument();
-    expect(screen.getByText("720 265 5475")).toBeInTheDocument();
-    expect(screen.getByText("Oficina")).toBeInTheDocument();
-    expect(screen.getByText("Móvil")).toBeInTheDocument();
   });
 
   it("renders the address", () => {

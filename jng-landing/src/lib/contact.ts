@@ -1,11 +1,12 @@
 /**
  * Centralized contact configuration.
  *
- * Update WHATSAPP_NUMBER to change the WhatsApp target across the entire site.
- * Format: country code + number, no spaces or dashes (e.g. "524772631485").
+ * Update these constants to change contact data across the entire site.
+ * Format for phone numbers: country code + number, no spaces or dashes.
  */
 
-// WhatsApp
+// ── WhatsApp ────────────────────────────────────────────────────────────────
+
 export const WHATSAPP_NUMBER = "524772631485" as const;
 
 export const WHATSAPP_DEFAULT_MESSAGE =
@@ -16,14 +17,18 @@ export function getWhatsAppUrl(message?: string): string {
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
 }
 
-// Office phones — single source of truth for the entire site
+// ── Email de contacto ───────────────────────────────────────────────────────
+
+export const CONTACT_EMAIL = "cromo181@gmail.com" as const;
+
+// ── Teléfonos de oficina ────────────────────────────────────────────────────
+
 export interface OfficePhone {
-  readonly label: "Oficina" | "Móvil";
   readonly display: string;
   readonly href: string;
 }
 
 export const OFFICE_PHONES: readonly OfficePhone[] = [
-  { label: "Oficina", display: "477 930 2775", href: "tel:+524779302775" },
-  { label: "Móvil",   display: "720 265 5475", href: "tel:+527202655475" },
+  { display: "477 930 2775", href: "tel:+524779302775" },
+  { display: "720 265 5475", href: "tel:+527202655475" },
 ] as const;

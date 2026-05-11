@@ -2,8 +2,6 @@ import { Phone, Heart, Shield } from "lucide-react";
 import { CAIPRA_MEDIA } from "@/lib/cloudinary";
 import { OFFICE_PHONES } from "@/lib/contact";
 
-const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-
 export default function Caipra() {
   return (
     <section id="caipra" className="bg-linear-to-br from-primary-50 to-secondary-50 py-20">
@@ -59,17 +57,14 @@ export default function Caipra() {
             </div>
 
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              {OFFICE_PHONES.map((phone) => (
+              {OFFICE_PHONES.map((tel) => (
                 <a
-                  key={phone.href}
-                  href={phone.href}
+                  key={tel.display}
+                  href={tel.href}
                   className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-pink-200 bg-pink-50 px-6 py-3 font-medium text-pink-700 transition-all hover:bg-pink-500 hover:text-white hover:border-pink-500 sm:w-auto"
                 >
                   <Phone className="h-4 w-4" />
-                  <span className="flex flex-col items-start leading-tight">
-                    <span className="text-xs opacity-75">{phone.label}</span>
-                    <span>{phone.display}</span>
-                  </span>
+                  {tel.display}
                 </a>
               ))}
             </div>

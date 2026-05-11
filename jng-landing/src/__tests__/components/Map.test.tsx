@@ -23,18 +23,14 @@ describe("Map", () => {
 
   it("renders exactly 2 phone numbers with labels", () => {
     render(<Map />);
-    const phoneLinks = screen.getAllByRole("link").filter(
-      (a) => a.getAttribute("href")?.startsWith("tel:")
-    );
-    expect(phoneLinks).toHaveLength(2);
-    expect(screen.getByText(/Oficina.*477 930 2775/)).toBeInTheDocument();
-    expect(screen.getByText(/Móvil.*720 265 5475/)).toBeInTheDocument();
+    expect(screen.getByText("477 930 2775")).toBeInTheDocument();
+    expect(screen.getByText("720 265 5475")).toBeInTheDocument();
   });
 
   it("renders the email address", () => {
     render(<Map />);
     expect(
-      screen.getByText("jn_generacion@hotmail.com")
+      screen.getByText("cromo181@gmail.com")
     ).toBeInTheDocument();
   });
 

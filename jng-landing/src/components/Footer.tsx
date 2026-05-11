@@ -1,5 +1,5 @@
 import { Phone, Mail, MapPin, MessageCircle } from "lucide-react";
-import { getWhatsAppUrl, OFFICE_PHONES } from "@/lib/contact";
+import { getWhatsAppUrl, CONTACT_EMAIL, OFFICE_PHONES } from "@/lib/contact";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -25,22 +25,21 @@ export default function Footer() {
               Contacto
             </h4>
             <ul className="space-y-3 text-sm">
-              {OFFICE_PHONES.map((phone) => (
-                <li key={phone.href} className="flex items-center gap-2">
+              {OFFICE_PHONES.map((tel) => (
+                <li key={tel.display} className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-primary-300" />
-                  <a href={phone.href} className="hover:text-accent-400 transition-colors">
-                    <span className="text-primary-400">{phone.label}:</span>{" "}
-                    {phone.display}
+                  <a href={tel.href} className="hover:text-accent-400 transition-colors">
+                    {tel.display}
                   </a>
                 </li>
               ))}
               <li className="flex items-center gap-2">
                 <Mail className="h-4 w-4 text-primary-300" />
                 <a
-                  href="mailto:jn_generacion@hotmail.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="hover:text-accent-400 transition-colors"
                 >
-                  jn_generacion@hotmail.com
+                  {CONTACT_EMAIL}
                 </a>
               </li>
               <li className="flex items-center gap-2">
