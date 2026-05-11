@@ -26,9 +26,9 @@ describe("cloudinary media configuration", () => {
     expect(SERVICES_MEDIA.sectionVideo).toBeDefined();
   });
 
-  it("CAIPRA_MEDIA has sectionImage and sectionVideo", () => {
-    expect(CAIPRA_MEDIA.sectionImage).toBeDefined();
+  it("CAIPRA_MEDIA has sectionVideo", () => {
     expect(CAIPRA_MEDIA.sectionVideo).toBeDefined();
+    expect(CAIPRA_MEDIA.sectionVideo).toBe("about-video-4");
   });
 
   it("TESTIMONIALS_MEDIA has avatar entries", () => {

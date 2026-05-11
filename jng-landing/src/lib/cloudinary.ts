@@ -36,8 +36,7 @@ export const SERVICES_MEDIA = {
 
 // CAIPRA Section
 export const CAIPRA_MEDIA = {
-  sectionImage: "caipra-main",
-  sectionVideo: "jng/caipra/caipra-video",
+  sectionVideo: "about-video-4",
 } as const;
 
 // Testimonials Section

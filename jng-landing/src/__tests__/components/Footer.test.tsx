@@ -28,12 +28,14 @@ describe("Footer", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders phone contact links", () => {
+  it("renders exactly 2 phone contact links with labels", () => {
     render(<Footer />);
     const phoneLinks = screen
       .getAllByRole("link")
       .filter((a) => a.getAttribute("href")?.startsWith("tel:"));
-    expect(phoneLinks.length).toBeGreaterThanOrEqual(3);
+    expect(phoneLinks).toHaveLength(2);
+    expect(screen.getByText(/Oficina/)).toBeInTheDocument();
+    expect(screen.getByText(/Móvil/)).toBeInTheDocument();
   });
 
   it("renders the email link", () => {

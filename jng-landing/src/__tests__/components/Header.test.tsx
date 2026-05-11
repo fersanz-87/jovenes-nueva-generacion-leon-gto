@@ -33,10 +33,12 @@ describe("Header", () => {
     }
   });
 
-  it("renders a call-to-action phone link", () => {
+  it("renders a call-to-action phone link pointing to office number", () => {
     render(<Header />);
     const llamarLinks = screen.getAllByText(/Llamar/);
     expect(llamarLinks.length).toBeGreaterThanOrEqual(1);
+    const phoneLink = llamarLinks[0].closest("a");
+    expect(phoneLink).toHaveAttribute("href", "tel:+524779302775");
   });
 
   it("toggles mobile menu on button click", async () => {

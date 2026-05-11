@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Menu, X, Phone } from "lucide-react";
 import CloudinaryImage from "@/components/ui/CloudinaryImage";
 import { GENERAL_MEDIA } from "@/lib/cloudinary";
+import { OFFICE_PHONES } from "@/lib/contact";
 
 const navLinks = [
   { href: "#inicio", label: "Inicio" },
@@ -50,7 +51,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="tel:+524779302775"
+              href={OFFICE_PHONES[0].href}
               className="flex items-center gap-1 rounded-full bg-primary-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-primary-600"
             >
               <Phone className="h-4 w-4" />
@@ -82,7 +83,7 @@ export default function Header() {
               </a>
             ))}
             <a
-              href="tel:+524779302775"
+              href={OFFICE_PHONES[0].href}
               className="mx-4 mt-2 flex items-center justify-center gap-1 rounded-full bg-primary-500 px-4 py-2 text-sm font-medium text-white"
             >
               <Phone className="h-4 w-4" />

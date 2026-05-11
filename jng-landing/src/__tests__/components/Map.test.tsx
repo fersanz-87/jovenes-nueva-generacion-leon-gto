@@ -21,11 +21,14 @@ describe("Map", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders contact info: phone numbers", () => {
+  it("renders exactly 2 phone numbers with labels", () => {
     render(<Map />);
-    expect(screen.getByText("477 930 2775")).toBeInTheDocument();
-    expect(screen.getByText("720 265 5475")).toBeInTheDocument();
-    expect(screen.getByText("477 263 1485")).toBeInTheDocument();
+    const phoneLinks = screen.getAllByRole("link").filter(
+      (a) => a.getAttribute("href")?.startsWith("tel:")
+    );
+    expect(phoneLinks).toHaveLength(2);
+    expect(screen.getByText(/Oficina.*477 930 2775/)).toBeInTheDocument();
+    expect(screen.getByText(/Móvil.*720 265 5475/)).toBeInTheDocument();
   });
 
   it("renders the email address", () => {

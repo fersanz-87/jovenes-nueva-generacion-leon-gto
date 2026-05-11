@@ -14,7 +14,7 @@ describe("WhatsAppButton", () => {
     const link = screen.getByLabelText("Contactar por WhatsApp");
     expect(link).toHaveAttribute(
       "href",
-      expect.stringContaining("wa.me/525567916346")
+      expect.stringContaining("wa.me/524772631485")
     );
   });
 

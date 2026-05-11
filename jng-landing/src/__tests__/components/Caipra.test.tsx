@@ -2,9 +2,7 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import Caipra from "@/components/Caipra";
 
-vi.mock("@/components/ui/CloudinaryImage", () => ({
-  default: ({ alt }: { alt: string }) => <img alt={alt} data-testid="caipra-img" />,
-}));
+vi.stubEnv("NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME", "test-cloud");
 
 describe("Caipra", () => {
   it("renders the CAIPRA heading", () => {
@@ -28,12 +26,23 @@ describe("Caipra", () => {
     ).toBeInTheDocument();
   });
 
-  it("renders all 3 phone links", () => {
+  it("renders a video element instead of an image", () => {
+    const { container } = render(<Caipra />);
+    const video = container.querySelector("video");
+    expect(video).toBeInTheDocument();
+    expect(container.querySelector("img")).toBeNull();
+  });
+
+  it("renders exactly 2 phone links with correct labels", () => {
     render(<Caipra />);
     const phoneLinks = screen.getAllByRole("link").filter(
       (link) => link.getAttribute("href")?.startsWith("tel:")
     );
-    expect(phoneLinks).toHaveLength(3);
+    expect(phoneLinks).toHaveLength(2);
+    expect(screen.getByText("477 930 2775")).toBeInTheDocument();
+    expect(screen.getByText("720 265 5475")).toBeInTheDocument();
+    expect(screen.getByText("Oficina")).toBeInTheDocument();
+    expect(screen.getByText("Móvil")).toBeInTheDocument();
   });
 
   it("renders the address", () => {

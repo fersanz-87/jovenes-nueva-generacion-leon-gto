@@ -1,12 +1,8 @@
 import { Phone, Heart, Shield } from "lucide-react";
-import CloudinaryImage from "@/components/ui/CloudinaryImage";
 import { CAIPRA_MEDIA } from "@/lib/cloudinary";
+import { OFFICE_PHONES } from "@/lib/contact";
 
-const telefonos = [
-  { numero: "477 705 9608", href: "tel:+524777059608" },
-  { numero: "477 630 0533", href: "tel:+524776300533" },
-  { numero: "477 449 1551", href: "tel:+524774491551" },
-];
+const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
 
 export default function Caipra() {
   return (
@@ -14,16 +10,27 @@ export default function Caipra() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-4xl">
           <div className="rounded-3xl bg-white p-8 shadow-lg sm:p-12">
-            {/* Section image */}
-            <CloudinaryImage
-              publicId={CAIPRA_MEDIA.sectionImage}
-              alt="Sección femenil CAIPRA"
-              width={800}
-              height={400}
-              className="mb-8 w-full rounded-2xl object-cover"
-              sizes="(max-width: 896px) 100vw, 800px"
-              fallback={null}
-            />
+            {/* Section video */}
+            <div className="relative mb-8 aspect-video w-full overflow-hidden rounded-2xl">
+              <video
+                className="absolute inset-0 h-full w-full object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
+                preload="metadata"
+                aria-label="Instalaciones de CAIPRA - Clínica de Rehabilitación Femenil"
+              >
+                <source
+                  src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${CAIPRA_MEDIA.sectionVideo}.webm`}
+                  type="video/webm"
+                />
+                <source
+                  src={`https://res.cloudinary.com/${cloudName}/video/upload/q_auto/${CAIPRA_MEDIA.sectionVideo}.mp4`}
+                  type="video/mp4"
+                />
+              </video>
+            </div>
 
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100">
@@ -52,14 +59,17 @@ export default function Caipra() {
             </div>
 
             <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-              {telefonos.map((tel) => (
+              {OFFICE_PHONES.map((phone) => (
                 <a
-                  key={tel.numero}
-                  href={tel.href}
+                  key={phone.href}
+                  href={phone.href}
                   className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-pink-200 bg-pink-50 px-6 py-3 font-medium text-pink-700 transition-all hover:bg-pink-500 hover:text-white hover:border-pink-500 sm:w-auto"
                 >
                   <Phone className="h-4 w-4" />
-                  {tel.numero}
+                  <span className="flex flex-col items-start leading-tight">
+                    <span className="text-xs opacity-75">{phone.label}</span>
+                    <span>{phone.display}</span>
+                  </span>
                 </a>
               ))}
             </div>
