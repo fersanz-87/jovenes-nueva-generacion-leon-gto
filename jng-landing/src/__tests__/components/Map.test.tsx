@@ -23,14 +23,14 @@ describe("Map", () => {
 
   it("renders exactly 2 phone numbers with labels", () => {
     render(<Map />);
-    expect(screen.getByText("477 930 2775")).toBeInTheDocument();
-    expect(screen.getByText("720 265 5475")).toBeInTheDocument();
+    expect(screen.getByText("Oficina 477 930 2775")).toBeInTheDocument();
+    expect(screen.getByText("Celular 720 265 5475")).toBeInTheDocument();
   });
 
   it("renders the email address", () => {
     render(<Map />);
     expect(
-      screen.getByText("cromo181@gmail.com")
+      screen.getByText("jovenesnuevageneracion21@gmail.com")
     ).toBeInTheDocument();
   });
 

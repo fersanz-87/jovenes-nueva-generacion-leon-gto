@@ -29,7 +29,7 @@ export default function Footer() {
                 <li key={tel.display} className="flex items-center gap-2">
                   <Phone className="h-4 w-4 text-primary-300" />
                   <a href={tel.href} className="hover:text-accent-400 transition-colors">
-                    {tel.display}
+                    {tel.label} {tel.display}
                   </a>
                 </li>
               ))}

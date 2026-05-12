@@ -19,16 +19,17 @@ export function getWhatsAppUrl(message?: string): string {
 
 // ── Email de contacto ───────────────────────────────────────────────────────
 
-export const CONTACT_EMAIL = "cromo181@gmail.com" as const;
+export const CONTACT_EMAIL = "jovenesnuevageneracion21@gmail.com" as const;
 
 // ── Teléfonos de oficina ────────────────────────────────────────────────────
 
 export interface OfficePhone {
+  readonly label: string;
   readonly display: string;
   readonly href: string;
 }
 
 export const OFFICE_PHONES: readonly OfficePhone[] = [
-  { display: "477 930 2775", href: "tel:+524779302775" },
-  { display: "720 265 5475", href: "tel:+527202655475" },
+  { label: "Oficina", display: "477 930 2775", href: "tel:+524779302775" },
+  { label: "Celular", display: "720 265 5475", href: "tel:+527202655475" },
 ] as const;
