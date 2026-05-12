@@ -39,11 +39,11 @@ describe("Footer", () => {
   it("renders the email link", () => {
     render(<Footer />);
     const emailLink = screen.getByRole("link", {
-      name: /cromo181@gmail.com/i,
+      name: /jovenesnuevageneracion21@gmail.com/i,
     });
     expect(emailLink).toHaveAttribute(
       "href",
-      "mailto:cromo181@gmail.com"
+      "mailto:jovenesnuevageneracion21@gmail.com"
     );
   });
 

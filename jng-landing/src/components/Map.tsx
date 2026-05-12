@@ -32,7 +32,7 @@ export default function Map() {
                       <span key={tel.display}>
                         {i > 0 && <br />}
                         <a href={tel.href} className="text-gray-600 hover:text-primary-500">
-                          {tel.display}
+                          {tel.label} {tel.display}
                         </a>
                       </span>
                     ))}

@@ -66,7 +66,7 @@ export default function Caipra() {
                   className="flex w-full items-center justify-center gap-2 rounded-full border-2 border-pink-200 bg-pink-50 px-6 py-3 font-medium text-pink-700 transition-all hover:bg-pink-500 hover:text-white hover:border-pink-500 sm:w-auto"
                 >
                   <Phone className="h-4 w-4" />
-                  {tel.display}
+                  {tel.label} {tel.display}
                 </a>
               ))}
             </div>
