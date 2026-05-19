@@ -4,6 +4,34 @@ import { rateLimit } from "@/lib/rate-limit";
 import { sendContactEmail } from "@/lib/email";
 
 const RATE_LIMIT = { limit: 5, windowMs: 60_000 } as const;
+const TURNSTILE_VERIFY_URL =
+  "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+
+interface TurnstileVerifyResponse {
+  success: boolean;
+  "error-codes"?: string[];
+}
+
+async function verifyTurnstile(token: string): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    // Turnstile not configured — skip verification (dev/test)
+    return true;
+  }
+
+  const res = await fetch(TURNSTILE_VERIFY_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({ secret, response: token }),
+  });
+
+  const data: TurnstileVerifyResponse = await res.json();
+  console.log("[turnstile] verify result:", {
+    success: data.success,
+    errors: data["error-codes"],
+  });
+  return data.success;
+}
 
 function sanitize(str: string): string {
   return str
@@ -52,6 +80,22 @@ export async function POST(request: Request) {
         success: true,
         message: "Mensaje enviado correctamente.",
       });
+    }
+
+    // Verify Turnstile token (when configured)
+    const turnstileToken =
+      typeof body["cf-turnstile-response"] === "string"
+        ? body["cf-turnstile-response"]
+        : "";
+    const turnstileOk = await verifyTurnstile(turnstileToken);
+    if (!turnstileOk) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "No pudimos verificar tu solicitud.",
+        },
+        { status: 400 }
+      );
     }
 
     const result = contactSchema.safeParse(body);

@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import type { ContactFormResponse } from "@/types";
 
 export default function ContactForm() {
@@ -15,6 +16,8 @@ export default function ContactForm() {
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const turnstileRef = useRef<TurnstileInstance>(null);
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -48,7 +51,10 @@ export default function ContactForm() {
           "Content-Type": "application/json",
           "x-csrf-token": csrfToken,
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          "cf-turnstile-response": turnstileToken ?? "",
+        }),
       });
 
       const data: ContactFormResponse = await res.json();
@@ -57,6 +63,8 @@ export default function ContactForm() {
         setStatus("success");
         setMessage(data.message);
         setFormData({ nombre: "", telefono: "", email: "", mensaje: "", _honeypot: "" });
+        setTurnstileToken(null);
+        turnstileRef.current?.reset();
       } else {
         setStatus("error");
         setMessage(data.message || "Hubo un error al enviar el mensaje.");
@@ -175,6 +183,15 @@ export default function ContactForm() {
           <p className="mt-1 text-sm text-red-500">{errors.mensaje}</p>
         )}
       </div>
+
+      {process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && (
+        <Turnstile
+          ref={turnstileRef}
+          siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
+          options={{ size: "invisible" }}
+          onSuccess={setTurnstileToken}
+        />
+      )}
 
       {status === "error" && (
         <div className="flex items-center gap-2 rounded-lg bg-red-50 p-3 text-sm text-red-600">

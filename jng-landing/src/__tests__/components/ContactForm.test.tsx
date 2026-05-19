@@ -1,6 +1,11 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+
+vi.mock("@marsidev/react-turnstile", () => ({
+  Turnstile: () => null,
+}));
+
 import ContactForm from "@/components/ContactForm";
 
 const mockFetch = vi.fn();
@@ -219,6 +224,7 @@ describe("ContactForm", () => {
         email: "maria@test.com",
         mensaje: "Quiero más información",
         _honeypot: "",
+        "cf-turnstile-response": "",
       }),
     });
   });

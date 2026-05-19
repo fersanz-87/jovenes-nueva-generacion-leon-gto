@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { _resetStore } from "@/lib/rate-limit";
 
 vi.mock("@/lib/validations", async () => {
@@ -12,6 +12,8 @@ const mockSendContactEmail = vi.fn();
 vi.mock("@/lib/email", () => ({
   sendContactEmail: (...args: unknown[]) => mockSendContactEmail(...args),
 }));
+
+const originalFetch = globalThis.fetch;
 
 async function callContactRoute(body: unknown) {
   const { POST } = await import("@/app/api/contact/route");
@@ -28,6 +30,12 @@ describe("POST /api/contact", () => {
     _resetStore();
     mockSendContactEmail.mockReset();
     mockSendContactEmail.mockResolvedValue(undefined);
+    // Turnstile secret not set by default — verification is skipped
+    delete process.env.TURNSTILE_SECRET_KEY;
+  });
+
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
   });
 
   it("returns success for valid data", async () => {
@@ -182,5 +190,56 @@ describe("POST /api/contact", () => {
     expect(json.success).toBe(false);
     // Generic message — no error leak
     expect(json.message).not.toContain("Email delivery");
+  });
+
+  it("returns 400 when Turnstile verification fails", async () => {
+    process.env.TURNSTILE_SECRET_KEY = "test-secret";
+
+    globalThis.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("challenges.cloudflare.com")) {
+        return Promise.resolve({
+          json: () => Promise.resolve({ success: false, "error-codes": ["invalid-input-response"] }),
+        });
+      }
+      return originalFetch(url);
+    }) as typeof fetch;
+
+    const res = await callContactRoute({
+      nombre: "Juan Pérez",
+      telefono: "477 123 4567",
+      mensaje: "Mensaje de prueba con suficientes caracteres.",
+      "cf-turnstile-response": "bad-token",
+    });
+
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.success).toBe(false);
+    expect(json.message).toBe("No pudimos verificar tu solicitud.");
+    expect(mockSendContactEmail).not.toHaveBeenCalled();
+  });
+
+  it("processes form when Turnstile verification succeeds", async () => {
+    process.env.TURNSTILE_SECRET_KEY = "test-secret";
+
+    globalThis.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("challenges.cloudflare.com")) {
+        return Promise.resolve({
+          json: () => Promise.resolve({ success: true }),
+        });
+      }
+      return originalFetch(url);
+    }) as typeof fetch;
+
+    const res = await callContactRoute({
+      nombre: "Juan Pérez",
+      telefono: "477 123 4567",
+      mensaje: "Mensaje de prueba con suficientes caracteres.",
+      "cf-turnstile-response": "valid-token",
+    });
+
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    expect(mockSendContactEmail).toHaveBeenCalledOnce();
   });
 });
