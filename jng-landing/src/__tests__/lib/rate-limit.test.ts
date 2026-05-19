@@ -1,15 +1,39 @@
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { rateLimit, _resetStore } from "@/lib/rate-limit";
+
+const mockLimit = vi.fn();
+
+vi.mock("@upstash/redis", () => {
+  // eslint-disable-next-line @typescript-eslint/no-extraneous-class
+  class MockRedis {}
+  return { Redis: MockRedis };
+});
+
+vi.mock("@upstash/ratelimit", () => {
+  class MockRatelimit {
+    limit = mockLimit;
+    static slidingWindow = vi.fn(() => "sliding-window-config");
+  }
+  return { Ratelimit: MockRatelimit };
+});
 
 describe("rateLimit (in-memory)", () => {
-  beforeEach(() => {
+  let rateLimit: typeof import("@/lib/rate-limit").rateLimit;
+  let _resetStore: typeof import("@/lib/rate-limit")._resetStore;
+
+  beforeEach(async () => {
     vi.useFakeTimers();
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
+
+    vi.resetModules();
+    const mod = await import("@/lib/rate-limit");
+    rateLimit = mod.rateLimit;
+    _resetStore = mod._resetStore;
     _resetStore();
   });
 
   afterEach(() => {
     vi.useRealTimers();
-    _resetStore();
   });
 
   const opts = { limit: 3, windowMs: 60_000 };
@@ -47,7 +71,6 @@ describe("rateLimit (in-memory)", () => {
     const blocked = await rateLimit("ip-3", opts);
     expect(blocked.ok).toBe(false);
 
-    // Advance time past the window
     vi.advanceTimersByTime(60_001);
 
     const allowed = await rateLimit("ip-3", opts);
@@ -68,20 +91,71 @@ describe("rateLimit (in-memory)", () => {
   });
 
   it("sliding window allows new request when oldest expires", async () => {
-    await rateLimit("ip-slide", opts); // t=0
+    await rateLimit("ip-slide", opts);
     vi.advanceTimersByTime(20_000);
-    await rateLimit("ip-slide", opts); // t=20s
+    await rateLimit("ip-slide", opts);
     vi.advanceTimersByTime(20_000);
-    await rateLimit("ip-slide", opts); // t=40s
+    await rateLimit("ip-slide", opts);
 
-    // All 3 slots used, should be blocked
     const blocked = await rateLimit("ip-slide", opts);
     expect(blocked.ok).toBe(false);
 
-    // Advance past the first request's window (t=0 + 60s = 60s, we're at 40s, need 20s more)
     vi.advanceTimersByTime(20_001);
 
     const allowed = await rateLimit("ip-slide", opts);
     expect(allowed.ok).toBe(true);
+  });
+});
+
+describe("rateLimit (Upstash)", () => {
+  let rateLimit: typeof import("@/lib/rate-limit").rateLimit;
+  let _resetStore: typeof import("@/lib/rate-limit")._resetStore;
+
+  beforeEach(async () => {
+    process.env.UPSTASH_REDIS_REST_URL = "https://fake-redis.upstash.io";
+    process.env.UPSTASH_REDIS_REST_TOKEN = "fake-token";
+    mockLimit.mockReset();
+
+    vi.resetModules();
+    const mod = await import("@/lib/rate-limit");
+    rateLimit = mod.rateLimit;
+    _resetStore = mod._resetStore;
+    _resetStore();
+  });
+
+  afterEach(() => {
+    delete process.env.UPSTASH_REDIS_REST_URL;
+    delete process.env.UPSTASH_REDIS_REST_TOKEN;
+  });
+
+  const opts = { limit: 5, windowMs: 60_000 };
+
+  it("returns ok when Upstash allows the request", async () => {
+    mockLimit.mockResolvedValueOnce({
+      success: true,
+      remaining: 4,
+      reset: Date.now() + 60_000,
+      limit: 5,
+    });
+
+    const result = await rateLimit("ip-upstash", opts);
+    expect(result.ok).toBe(true);
+    expect(result.remaining).toBe(4);
+    expect(mockLimit).toHaveBeenCalledWith("ip-upstash");
+  });
+
+  it("returns blocked when Upstash denies the request", async () => {
+    const resetTime = Date.now() + 30_000;
+    mockLimit.mockResolvedValueOnce({
+      success: false,
+      remaining: 0,
+      reset: resetTime,
+      limit: 5,
+    });
+
+    const result = await rateLimit("ip-upstash", opts);
+    expect(result.ok).toBe(false);
+    expect(result.remaining).toBe(0);
+    expect(result.resetAt).toBe(resetTime);
   });
 });
