@@ -1,3 +1,4 @@
+import { Resend } from "resend";
 import { sanitizeEmailHeader } from "@/lib/validations";
 
 export interface ContactPayload {
@@ -15,12 +16,18 @@ function getEmailTo(): string {
   return emailTo;
 }
 
+function getResendFrom(): string {
+  const from = process.env.RESEND_FROM;
+  if (!from) {
+    throw new Error("RESEND_FROM environment variable is not set.");
+  }
+  return from;
+}
+
 /**
- * Send a contact form submission email.
+ * Send a contact form submission email via Resend.
  *
- * This is a stub — wire in a transport (Resend, SendGrid, Nodemailer)
- * when ready. The function enforces structured input so raw SMTP
- * strings are never passed through.
+ * When RESEND_API_KEY is not set (dev/test), logs the payload instead.
  */
 export async function sendContactEmail(
   payload: ContactPayload
@@ -33,12 +40,42 @@ export async function sendContactEmail(
     ? sanitizeEmailHeader(payload.email)
     : undefined;
 
-  // TODO: Replace with actual email transport
-  console.log("[email] would send:", {
+  const body = [
+    `Nombre: ${payload.nombre}`,
+    `Teléfono: ${payload.telefono}`,
+    payload.email ? `Email: ${payload.email}` : null,
+    "",
+    payload.mensaje,
+  ]
+    .filter((line) => line !== null)
+    .join("\n");
+
+  if (!process.env.RESEND_API_KEY) {
+    console.log("[email] RESEND_API_KEY not set, logging instead:", {
+      to,
+      subject,
+      replyTo,
+      body,
+    });
+    return;
+  }
+
+  const resend = new Resend(process.env.RESEND_API_KEY);
+  const from = getResendFrom();
+
+  const { error } = await resend.emails.send({
+    from,
     to,
     subject,
     replyTo,
-    body: payload.mensaje,
-    phone: payload.telefono,
+    text: body,
   });
+
+  if (error) {
+    // Log for debugging but do NOT leak to the client
+    console.error("[email] Resend API error:", error.name, error.message);
+    throw new Error("Email delivery failed");
+  }
+
+  console.log("[email] sent successfully to", to);
 }

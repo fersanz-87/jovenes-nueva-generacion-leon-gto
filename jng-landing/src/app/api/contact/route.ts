@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { contactSchema } from "@/lib/validations";
 import { rateLimit } from "@/lib/rate-limit";
+import { sendContactEmail } from "@/lib/email";
 
 const RATE_LIMIT = { limit: 5, windowMs: 60_000 } as const;
 
@@ -76,9 +77,7 @@ export async function POST(request: Request) {
       mensaje: sanitize(mensaje),
     };
 
-    // TODO: Integrate email service (e.g., Resend, SendGrid, Nodemailer)
-    // For now, log the contact submission
-    console.log("Nuevo contacto recibido:", sanitizedData);
+    await sendContactEmail(sanitizedData);
 
     return NextResponse.json({
       success: true,
