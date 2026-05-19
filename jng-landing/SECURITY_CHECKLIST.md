@@ -9,6 +9,8 @@
 | 3 | Email de contacto via Resend (reemplaza stub `console.log`) | `feat: implement Resend email transport for contact form` |
 | 4 | Cloudflare Turnstile (invisible widget + verificación server-side) | `feat: add Cloudflare Turnstile anti-bot verification` |
 | 5 | CI workflow: `pnpm audit`, lint, tests en push/PR | `chore: add CI workflow for security audit, lint, and tests` |
+| 6 | Fix `brace-expansion` override que rompia eslint | `fix: scope brace-expansion override by major to unblock eslint` |
+| 7 | Bump Next.js 16.2.4 → 16.2.6, React 19.2.3 → 19.2.6 (12 CVEs high) | `fix(deps): bump next to 16.2.6 to patch 12 high-severity CVEs` |
 
 ## Variables de entorno a configurar en Vercel
 
@@ -42,3 +44,5 @@
 - El rate limiter en Vercel corre en Edge/Serverless — sin Upstash Redis, cada instancia tendria su propio store in-memory (inefectivo). Upstash es necesario para rate limiting real en produccion.
 - Si `TURNSTILE_SECRET_KEY` no esta configurada, la verificacion se omite (graceful degradation para dev/staging).
 - Si `RESEND_API_KEY` no esta configurada, los emails se loguean en consola en vez de enviarse.
+- Next.js y React deben revisarse mensualmente. Subscribirse a https://github.com/vercel/next.js/security/advisories para recibir alertas.
+- Queda 1 advisory moderate: `postcss <8.5.10` (XSS en CSS stringify) — dep transitiva de `@tailwindcss/postcss` y `next`. Se resolvera cuando publiquen updates.
