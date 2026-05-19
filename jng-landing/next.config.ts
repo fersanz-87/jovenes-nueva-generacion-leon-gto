@@ -1,24 +1,5 @@
 import type { NextConfig } from "next";
 
-// Content Security Policy directives
-// Shipped as Report-Only first — flip to Content-Security-Policy after 24h of clean reports in production.
-const cspDirectives = [
-  "default-src 'self'",
-  "script-src 'self'",
-  // Styles: 'unsafe-inline' needed because Next.js injects inline styles for font-display, layout, etc.
-  // TODO: migrate to nonce-based CSP via middleware for stricter policy
-  "style-src 'self' 'unsafe-inline'",
-  "img-src 'self' res.cloudinary.com data: blob:",
-  "media-src 'self' res.cloudinary.com",
-  "font-src 'self'",
-  "connect-src 'self' res.cloudinary.com",
-  "frame-src www.google.com",
-  "frame-ancestors 'none'",
-  "base-uri 'self'",
-  "form-action 'self'",
-  "upgrade-insecure-requests",
-].join("; ");
-
 const nextConfig: NextConfig = {
   images: {
     remotePatterns: [
@@ -49,9 +30,14 @@ const nextConfig: NextConfig = {
             key: "Permissions-Policy",
             value: "camera=(), microphone=(), geolocation=()",
           },
+          // CSP is set dynamically in src/proxy.ts with per-request nonces
           {
-            key: "Content-Security-Policy-Report-Only",
-            value: cspDirectives,
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Cross-Origin-Resource-Policy",
+            value: "same-origin",
           },
         ],
       },

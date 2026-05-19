@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { _resetStore } from "@/lib/rate-limit";
 
 vi.mock("@/lib/validations", async () => {
@@ -7,6 +7,13 @@ vi.mock("@/lib/validations", async () => {
   );
   return actual;
 });
+
+const mockSendContactEmail = vi.fn();
+vi.mock("@/lib/email", () => ({
+  sendContactEmail: (...args: unknown[]) => mockSendContactEmail(...args),
+}));
+
+const originalFetch = globalThis.fetch;
 
 async function callContactRoute(body: unknown) {
   const { POST } = await import("@/app/api/contact/route");
@@ -19,11 +26,16 @@ async function callContactRoute(body: unknown) {
 }
 
 describe("POST /api/contact", () => {
-  let consoleSpy: ReturnType<typeof vi.spyOn>;
-
   beforeEach(() => {
     _resetStore();
-    consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    mockSendContactEmail.mockReset();
+    mockSendContactEmail.mockResolvedValue(undefined);
+    // Turnstile secret not set by default — verification is skipped
+    delete process.env.TURNSTILE_SECRET_KEY;
+  });
+
+  afterEach(() => {
+    globalThis.fetch = originalFetch;
   });
 
   it("returns success for valid data", async () => {
@@ -38,6 +50,24 @@ describe("POST /api/contact", () => {
     const json = await res.json();
     expect(json.success).toBe(true);
     expect(json.message).toContain("Gracias");
+  });
+
+  it("calls sendContactEmail with sanitized data", async () => {
+    await callContactRoute({
+      nombre: "Juan Pérez",
+      telefono: "477 123 4567",
+      email: "juan@test.com",
+      mensaje: "Me gustaría recibir información sobre el centro.",
+    });
+
+    expect(mockSendContactEmail).toHaveBeenCalledOnce();
+    expect(mockSendContactEmail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        nombre: "Juan Pérez",
+        telefono: "477 123 4567",
+        email: "juan@test.com",
+      })
+    );
   });
 
   it("returns success for valid data without email", async () => {
@@ -63,6 +93,8 @@ describe("POST /api/contact", () => {
     expect(res.status).toBe(200);
     const json = await res.json();
     expect(json.success).toBe(true);
+    // Email should NOT be sent for honeypot
+    expect(mockSendContactEmail).not.toHaveBeenCalled();
   });
 
   it("returns 400 for missing required fields", async () => {
@@ -125,25 +157,89 @@ describe("POST /api/contact", () => {
   });
 
   it("sanitizes HTML in input fields", async () => {
-    consoleSpy.mockClear();
-
-    const res = await callContactRoute({
+    await callContactRoute({
       nombre: '<script>alert("xss")</script>Juan',
       telefono: "477 123 4567",
       mensaje: 'Mensaje con <b>HTML</b> y "comillas" & ampersand',
     });
 
-    expect(res.status).toBe(200);
+    expect(mockSendContactEmail).toHaveBeenCalledOnce();
+    const payload = mockSendContactEmail.mock.calls[0][0] as Record<
+      string,
+      string
+    >;
+    expect(payload.nombre).not.toContain("<script>");
+    expect(payload.nombre).toContain("&lt;script&gt;");
+    expect(payload.mensaje).not.toContain("<b>");
+    expect(payload.mensaje).toContain("&lt;b&gt;");
+  });
 
-    const logCall = consoleSpy.mock.calls.find(
-      (call) => call[0] === "Nuevo contacto recibido:"
+  it("returns 500 when email service fails", async () => {
+    mockSendContactEmail.mockRejectedValueOnce(
+      new Error("Email delivery failed")
     );
-    expect(logCall).toBeDefined();
 
-    const loggedData = logCall![1] as Record<string, string>;
-    expect(loggedData.nombre).not.toContain("<script>");
-    expect(loggedData.nombre).toContain("&lt;script&gt;");
-    expect(loggedData.mensaje).not.toContain("<b>");
-    expect(loggedData.mensaje).toContain("&lt;b&gt;");
+    const res = await callContactRoute({
+      nombre: "Juan Pérez",
+      telefono: "477 123 4567",
+      mensaje: "Mensaje de prueba con suficientes caracteres.",
+    });
+
+    expect(res.status).toBe(500);
+    const json = await res.json();
+    expect(json.success).toBe(false);
+    // Generic message — no error leak
+    expect(json.message).not.toContain("Email delivery");
+  });
+
+  it("returns 400 when Turnstile verification fails", async () => {
+    process.env.TURNSTILE_SECRET_KEY = "test-secret";
+
+    globalThis.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("challenges.cloudflare.com")) {
+        return Promise.resolve({
+          json: () => Promise.resolve({ success: false, "error-codes": ["invalid-input-response"] }),
+        });
+      }
+      return originalFetch(url);
+    }) as typeof fetch;
+
+    const res = await callContactRoute({
+      nombre: "Juan Pérez",
+      telefono: "477 123 4567",
+      mensaje: "Mensaje de prueba con suficientes caracteres.",
+      "cf-turnstile-response": "bad-token",
+    });
+
+    expect(res.status).toBe(400);
+    const json = await res.json();
+    expect(json.success).toBe(false);
+    expect(json.message).toBe("No pudimos verificar tu solicitud.");
+    expect(mockSendContactEmail).not.toHaveBeenCalled();
+  });
+
+  it("processes form when Turnstile verification succeeds", async () => {
+    process.env.TURNSTILE_SECRET_KEY = "test-secret";
+
+    globalThis.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes("challenges.cloudflare.com")) {
+        return Promise.resolve({
+          json: () => Promise.resolve({ success: true }),
+        });
+      }
+      return originalFetch(url);
+    }) as typeof fetch;
+
+    const res = await callContactRoute({
+      nombre: "Juan Pérez",
+      telefono: "477 123 4567",
+      mensaje: "Mensaje de prueba con suficientes caracteres.",
+      "cf-turnstile-response": "valid-token",
+    });
+
+    expect(res.status).toBe(200);
+    const json = await res.json();
+    expect(json.success).toBe(true);
+    expect(mockSendContactEmail).toHaveBeenCalledOnce();
   });
 });
