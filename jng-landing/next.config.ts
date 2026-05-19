@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
-// Content Security Policy directives
-// Shipped as Report-Only first — flip to Content-Security-Policy after 24h of clean reports in production.
+// Content Security Policy directives — enforced.
 const cspDirectives = [
   "default-src 'self'",
   "script-src 'self'",
@@ -50,8 +49,16 @@ const nextConfig: NextConfig = {
             value: "camera=(), microphone=(), geolocation=()",
           },
           {
-            key: "Content-Security-Policy-Report-Only",
+            key: "Content-Security-Policy",
             value: cspDirectives,
+          },
+          {
+            key: "Cross-Origin-Opener-Policy",
+            value: "same-origin",
+          },
+          {
+            key: "Cross-Origin-Resource-Policy",
+            value: "same-origin",
           },
         ],
       },
