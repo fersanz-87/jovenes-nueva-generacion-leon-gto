@@ -1,3 +1,4 @@
+import { connection } from "next/server";
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import AboutUs from "@/components/AboutUs";
@@ -8,7 +9,12 @@ import Map from "@/components/Map";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-export default function Home() {
+export default async function Home() {
+  // CSP nonces (set in src/proxy.ts) require dynamic rendering.
+  // See: https://nextjs.org/docs/app/guides/content-security-policy
+  // Removing this line will silently break inline scripts hydration.
+  await connection();
+
   return (
     <>
       <Header />
