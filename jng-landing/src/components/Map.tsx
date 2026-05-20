@@ -2,7 +2,7 @@ import { MapPin, Clock, Phone, Mail } from "lucide-react";
 import ContactForm from "./ContactForm";
 import { CONTACT_EMAIL, OFFICE_PHONES } from "@/lib/contact";
 
-export default function Map() {
+export default function Map({ nonce }: { nonce?: string }) {
   return (
     <>
       <section id="contacto" className="bg-white py-20">
@@ -80,7 +80,7 @@ export default function Map() {
 
             {/* Contact Form */}
             <div className="relative">
-              <ContactForm />
+              <ContactForm nonce={nonce} />
             </div>
           </div>
         </div>

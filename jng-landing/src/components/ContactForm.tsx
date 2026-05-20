@@ -5,7 +5,7 @@ import { Send, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 import type { ContactFormResponse } from "@/types";
 
-export default function ContactForm() {
+export default function ContactForm({ nonce }: { nonce?: string }) {
   const [formData, setFormData] = useState({
     nombre: "",
     telefono: "",
@@ -189,6 +189,7 @@ export default function ContactForm() {
           ref={turnstileRef}
           siteKey={process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY}
           options={{ size: "invisible" }}
+          scriptOptions={nonce ? { nonce } : undefined}
           onSuccess={setTurnstileToken}
         />
       )}
